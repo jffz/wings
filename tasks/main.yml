@@ -1,0 +1,12 @@
+---
+- include: "kernel.yml"
+- include: "dependencies-{{ ansible_distribution|lower }}.yml"
+- include: "daemon-{{ ansible_distribution|lower }}.yml"
+- name: "Opening ports through firewalld"
+  firewalld:
+    port: "{{ item }}/tcp"
+    permanent: true
+    state: enabled
+  with_items:
+    - 8080
+    - 2022

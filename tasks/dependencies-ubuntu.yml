@@ -1,0 +1,35 @@
+---
+- name: "Disabling selinux"
+  selinux:
+    state: disabled
+
+- name: "Install docker"
+  shell: curl -sSL https://get.docker.com/ | sh
+
+- name: "Enable docker service"
+  systemd:
+    name: docker
+    state: restarted
+    enabled: True
+
+- name: "Get NodeJS"
+  shell: curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+
+- name: "Install NodeJS"
+  apt:
+    update_cache: yes
+    name: nodejs
+    state: latest
+
+- name: "Install other prereqs"
+  apt:
+    update_cache: yes
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - tar
+    - unzip
+    - make
+    - gcc
+    - g++
+    - python-minimal

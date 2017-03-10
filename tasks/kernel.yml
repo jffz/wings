@@ -1,0 +1,10 @@
+---
+- name: "Update kernel"
+  apt:
+    update_cache: yes
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - "linux-image-extra-{{ ansible_kernel }}"
+    - linux-image-extra-virtual
+  when: (ansible_distribution == "Ubuntu")

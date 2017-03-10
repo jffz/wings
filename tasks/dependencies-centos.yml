@@ -1,0 +1,31 @@
+---
+- name: "Disabling selinux"
+  selinux:
+    state: disabled
+
+- name: "Install docker repo"
+  yum_repository:
+    name: "docker"
+    description: "Docker Repository"
+    #mirrorlist: "https://mirrors.fedoraproject.org/metalink?repo=epel-{{ ansible_distribution_major_version }}&arch=$basearch"
+    enabled: yes
+    gpgcheck: yes
+    gpgkey: https://yum.dockerproject.org/gpg
+    baseurl: https://yum.dockerproject.org/repo/main/centos/{{ ansible_distribution_major_version }}/
+
+- name: " Install NodeJS repo"
+  shell: curl --silent --location https://rpm.nodesource.com/setup_6.x | bash -
+
+- name: "Install packages"
+  yum:
+    update_cache: yes
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - docker-engine
+    - nodejs
+    - make
+    - gcc
+    - gcc-c++
+    - zip
+    - unzip

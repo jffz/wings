@@ -1,0 +1,21 @@
+galaxy_info:
+  author: Geoffrey Bachelot
+  description: Pterdoactyl.io Daemon installation playbook
+  company: HSFactory
+  license: MIT
+
+  min_ansible_version: 2.2
+
+  platforms:
+    - name: Ubuntu
+      versions:
+        - trusty
+    - name: EL
+      versions:
+        - 7
+
+  galaxy_tags:
+    - pterodactyl
+    - gamepanel
+
+dependencies: []

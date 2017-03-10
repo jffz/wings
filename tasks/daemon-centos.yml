@@ -1,0 +1,37 @@
+---
+- name: "Create Daemon paths"
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0755
+  with_items:
+    - /srv/daemon
+    - /srv/daemon-data
+
+- name: "Install Daemon"
+  unarchive:
+    src: "https://github.com/Pterodactyl/Daemon/archive/v{{ daemon.version }}.tar.gz"
+    dest: /srv/daemon
+    remote_src: yes
+    extra_opts: --strip-components=1
+
+- name: "Install Daemon components"
+  shell: npm install --only=production
+  args:
+    chdir: /srv/daemon
+
+- name: "Install Wings Systemd script"
+  template:
+    path: pterodactyl.service.j2
+    global: yes
+    state: present
+
+- name: "Enable Services"
+  systemd:
+    daemon_reload: yes
+    name: "{{ item }}"
+    state: restarted
+    enabled: True
+  with_items:
+    - docker
+    - wings
